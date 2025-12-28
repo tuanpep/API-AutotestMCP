@@ -14,8 +14,8 @@ from pydantic import BaseModel
 mcp = FastMCP("api-test-mcp")
 
 # Constants
-EXPORTS_DIR = "exports"
-PROFILES_DIR = "profiles"
+EXPORTS_DIR = os.getenv("API_TEST_EXPORTS_DIR", "exports")
+PROFILES_DIR = os.getenv("API_TEST_PROFILES_DIR", "profiles")
 
 CLIENT_PROFILES = {
     "iphone_app": {
@@ -269,6 +269,7 @@ def export_test_report(
     
     filename = f"{session_id}.{format}"
     filepath = os.path.join(EXPORTS_DIR, filename)
+    abs_filepath = os.path.abspath(filepath)
     
     if format == "json":
         report = {
@@ -311,7 +312,7 @@ def export_test_report(
         with open(filepath, "w") as f:
             f.write(content)
     
-    return f"Report exported successfully to {filepath}"
+    return f"Report exported successfully to {abs_filepath}"
 
 def main():
     ensure_dirs()

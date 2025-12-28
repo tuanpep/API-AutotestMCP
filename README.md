@@ -59,6 +59,35 @@ Add the following to your MCP configuration file:
 - **`run_curl`**: Execute raw curl commands (supports Windows CMD escaping).
 - **`export_test_report`**: Export request logs to JSON or Markdown.
 
+## Configuration
+
+You can configure the server using environment variables:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `API_TEST_EXPORTS_DIR` | Directory where test reports are saved | `./exports` |
+| `API_TEST_PROFILES_DIR` | Directory for client profiles | `./profiles` |
+
+| `API_TEST_PROFILES_DIR` | Directory for client profiles | `./profiles` |
+
+### Auto-Set to IDE Workspace
+To automatically save reports to your current open project folder, configure the `env` in your MCP settings file (e.g., `claude_desktop_config.json` or Cursor settings):
+
+```json
+{
+  "mcpServers": {
+    "api-tester": {
+      "command": "uv",
+      "args": ["tool", "run", "api-test-mcp"],
+      "env": {
+        "API_TEST_EXPORTS_DIR": "${workspaceFolder}/test-reports"
+      }
+    }
+  }
+}
+```
+*Note: `${workspaceFolder}` is supported by most editors likes VS Code and Cursor.*
+
 ## Workflows & Examples
 
 ### 1. Configuring the Endpoint
