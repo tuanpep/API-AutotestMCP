@@ -6,8 +6,7 @@ on:
       - main
     paths-ignore:
       - 'CHANGELOG.md'
-      # Do not ignore pyproject.toml as manual version bumps should also trigger release if tagged? 
-      # Actually semantic-release handles this.
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -18,12 +17,12 @@ jobs:
     concurrency: release
     environment:
       name: pypi
-      url: https://pypi.org/p/api-test-mcp  # Update this if publishing to PyPI
+      url: https://pypi.org/p/api-test-mcp
 
     steps:
     - uses: actions/checkout@v3
       with:
-        fetch-depth: 0  # Required for semantic-release to read commit history
+        fetch-depth: 0
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -34,6 +33,11 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install python-semantic-release build
+
+    - name: Git configuration
+      run: |
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
 
     - name: Build and Release
       env:
