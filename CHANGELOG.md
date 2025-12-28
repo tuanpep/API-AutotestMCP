@@ -2,6 +2,23 @@
 
 <!-- version list -->
 
+## v1.2.0 (2025-12-28)
+
+### Refactoring & Polish
+- Modularized codebase into a structured package (`config`, `logic`, `models`, `utils`).
+- Replaced manual config parsing with `pydantic-settings`.
+- Improved Curl command parsing (better Windows support and URL detection).
+- Integrated `pydantic` for strict data validation and structured report exporting.
+
+### Testing
+- Added comprehensive unit test suite with `pytest`.
+- Added request mocking with `respx`.
+
+### Community
+- Added MIT License and Contributing guidelines.
+- Added GitHub Actions for automated CI (Testing & Linting).
+- Revamped README for better visibility and clarity.
+
 ## v1.1.0 (2025-12-28)
 
 ### Bug Fixes

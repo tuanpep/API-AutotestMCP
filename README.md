@@ -1,43 +1,35 @@
 # API Auto-Test MCP Server
 
+[![CI](https://github.com/tuanpep/API-AutotestMCP/actions/workflows/ci.yml/badge.svg)](https://github.com/tuanpep/API-AutotestMCP/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 An MCP server that allows AI agents to perform automated backend testing, simulate real client behavior (iOS, Android, Web), and export session logs for audit.
 
-## Quick Install (One-Line)
+## 🚀 Key Features
 
-Run this command in your terminal:
+- **Client Simulation**: Test your APIs as an iPhone, Android, or Desktop browser.
+- **Curl Parsing**: Copy/paste `curl` commands from Chrome DevTools directly into the tool.
+- **Performance Monitoring**: Automatically flags requests slower than 500ms.
+- **Auto-Logging**: Every request is saved as a JSON artifact for debugging.
+- **Session Reports**: Export full test sessions to Markdown or JSON.
+
+## 📦 Installation
+
+### Quick Install (One-Line)
+
 ```bash
-curl -fsSL https://raw.githubusercontent.com/tuanpep/api-test-mcp/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/tuanpep/API-AutotestMCP/main/install.sh | bash
 ```
 
-## Manual Installation
+### Manual Installation (Using uv)
 
-### Using uv (Recommended)
 ```bash
-uv tool install git+https://github.com/tuanpep/api-test-mcp
+uv tool install git+https://github.com/tuanpep/API-AutotestMCP.git
 ```
 
-### Using pip
-```bash
-pip install git+https://github.com/tuanpep/api-test-mcp
-```
+## 🛠 Usage in Claude Desktop / Cursor
 
-### From Source (Development)
-1. Clone the repository.
-2. Run:
-   ```bash
-   chmod +x install.sh && ./install.sh
-   ```
-
-## Usage
-
-### Running Locally
-To run the server manually:
-```bash
-api-test-mcp
-```
-
-### Integration with Claude Desktop / Cursor
-Add the following to your MCP configuration file:
+Add the following to your MCP configuration file (e.g., `claude_desktop_config.json`):
 
 ```json
 {
@@ -48,37 +40,7 @@ Add the following to your MCP configuration file:
         "tool",
         "run",
         "api-test-mcp"
-      ]
-    }
-  }
-}
-```
-
-## Tools Available
-- **`simulate_client_request`**: Execute requests simulating specific devices.
-- **`run_curl`**: Execute raw curl commands (supports Windows CMD escaping).
-- **`export_test_report`**: Export request logs to JSON or Markdown.
-
-## Configuration
-
-You can configure the server using environment variables:
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `API_TEST_EXPORTS_DIR` | Directory where test reports are saved | `./exports` |
-| `API_TEST_PROFILES_DIR` | Directory for client profiles | `./profiles` |
-
-| `API_TEST_PROFILES_DIR` | Directory for client profiles | `./profiles` |
-
-### Auto-Set to IDE Workspace
-To automatically save reports to your current open project folder, configure the `env` in your MCP settings file (e.g., `claude_desktop_config.json` or Cursor settings):
-
-```json
-{
-  "mcpServers": {
-    "api-tester": {
-      "command": "uv",
-      "args": ["tool", "run", "api-test-mcp"],
+      ],
       "env": {
         "API_TEST_EXPORTS_DIR": "${workspaceFolder}/test-reports"
       }
@@ -86,42 +48,26 @@ To automatically save reports to your current open project folder, configure the
   }
 }
 ```
-*Note: `${workspaceFolder}` is supported by most editors likes VS Code and Cursor.*
 
-## Workflows & Examples
+## 🧰 Tools Available
 
-### 1. Configuring the Endpoint
-There is no hardcoded "base URL" in the server. You (or the AI) provide the full URL for every request.
-*   **Via Tool:** Pass `url="http://localhost:8088/api/v1/..."` argument.
-*   **Via Curl:** Include the URL in the curl string: `curl http://api.com/endpoint`.
+| Tool | Description |
+|------|-------------|
+| `simulate_client_request` | Execute requests simulating specific devices (iPhone, Android, Desktop). |
+| `run_curl` | Parses and executes a raw curl command. |
+| `export_test_report` | Packages all recent requests into a single Markdown or JSON report. |
 
-### 2. Handling Authentication
-You can test secure APIs in two ways:
+## ⚙️ Configuration
 
-#### Method A: Using `simulate_client_request` (Easier)
-If you have a Bearer token, simply pass it to the `auth_token` parameter. The tool will automatically add the `Authorization: Bearer <token>` header.
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `API_TEST_EXPORTS_DIR` | Directory where test reports and logs are saved. Supports `${workspaceFolder}`. | `exports` |
+| `API_TEST_LOG_LEVEL` | Logging level. | `INFO` |
 
-#### Method B: Using `run_curl` (More Flexible)
-Include your custom headers directly in the command. This is perfect for complex auth like API Keys, Custom Schemes, or Cookies.
-```bash
-curl -H "X-API-KEY: 12345" -H "Authorization: CustomScheme xyz" https://api.com/secure
-```
+## 🤝 Contributing
 
-#### Method C: The "Agentic" Chain (Login + Action)
-You can instruct the AI to perform a multi-step workflow. The AI will handle the "variable passing" for you.
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
-**Prompt to AI:**
-> "First, login to `POST /auth/login` with these credentials...
-> Then, take the `access_token` from the response and use it to test `GET /user/profile`."
+## 📄 License
 
-**What happens:**
-1. AI calls `simulate_client_request(url="/login"...)`.
-2. Tool returns JSON response with token.
-3. AI reads token, then calls `simulate_client_request(url="/profile", auth_token="eyJ...")`.
-
-## Development
-
-### Directory Structure
-- `src/api_test_mcp/server.py`: Main server logic.
-- `exports/`: Generated reports.
-- `profiles/`: Client profiles.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

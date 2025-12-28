@@ -2,5 +2,11 @@ __pycache__/
 *.pyc
 .venv/
 exports/
+records/
+profiles/
 .env
 .DS_Store
+dist/
+build/
+*.egg-info/
+.pytest_cache/
