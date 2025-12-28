@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Dict, List, Literal, Optional
 from pydantic import BaseModel, Field
 
 ClientType = Literal["iphone_app", "android_app", "chrome_desktop", "safari_mac", "curl_custom"]

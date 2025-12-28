@@ -1,5 +1,4 @@
 import pytest
-import os
 from api_test_mcp.config import settings
 
 @pytest.fixture(autouse=True)

@@ -3,10 +3,10 @@ import json
 import os
 import httpx
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List
 
 from .config import settings
-from .models import RequestLogEntry, ResponseCapture, RequestLogEntry, CLIENT_PROFILES
+from .models import ResponseCapture, RequestLogEntry
 from .utils import ensure_dirs
 
 # In-memory storage for the current session
@@ -99,7 +99,7 @@ async def execute_request(
         output += f"Error: {error_msg}\n"
     else:
         output += f"Size: {response_capture.size_bytes} bytes\n"
-        output += f"Response Preview:\n"
+        output += "Response Preview:\n"
         if response_capture.json_data:
             output += json.dumps(response_capture.json_data, indent=2)
         else:

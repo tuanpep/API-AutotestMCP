@@ -1,4 +1,3 @@
-import pytest
 from api_test_mcp.utils import parse_curl_command
 
 def test_parse_basic_curl():

@@ -1,7 +1,7 @@
 import os
 import json
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, Literal, Optional
 
 from mcp.server.fastmcp import FastMCP
 
@@ -59,7 +59,6 @@ async def run_curl(command: str) -> str:
             return "Error: Could not extract URL from curl command."
         
         # Determine client type
-        ua = parsed["headers"].get("User-Agent", "curl")
         client_type = "curl_custom"
         
         return await execute_request(
@@ -112,7 +111,7 @@ def export_test_report(
             content += f"- **Time:** {entry.duration_ms}ms {perf_icon}\n"
             
             if entry.request_payload:
-                content += f"### Request Payload\n"
+                content += "### Request Payload\n"
                 content += "```json\n"
                 content += json.dumps(entry.request_payload, indent=2)
                 content += "\n```\n"
@@ -120,7 +119,7 @@ def export_test_report(
             if entry.response.error:
                  content += f"- **Error:** {entry.response.error}\n"
             else:
-                content += f"### Response Snippet\n"
+                content += "### Response Snippet\n"
                 content += "```json\n"
                 if entry.response.json_data:
                     content += json.dumps(entry.response.json_data, indent=2)

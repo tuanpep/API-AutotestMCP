@@ -2,7 +2,7 @@ import os
 import json
 import shlex
 import re
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict
 from .config import settings
 
 def ensure_dirs():
