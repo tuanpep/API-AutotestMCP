@@ -15,6 +15,24 @@ requires-python = ">=3.10"
 [project.scripts]
 api-test-mcp = "api_test_mcp.server:main"
 
+[tool.semantic_release]
+version_toml = ["pyproject.toml:project.version"]
+branch = "main"
+build_command = "pip install build && python -m build"
+
+# Generate CHANGELOG.md
+[tool.semantic_release.changelog]
+exclude_commit_patterns = ["chore: release.*"]
+
+# Create git release tag
+[tool.semantic_release.git]
+commit_message = "chore(release): {version}"
+
+# Publish settings
+[tool.semantic_release.publish]
+dist_glob_patterns = ["dist/*"]
+upload_to_vcs_release = true
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

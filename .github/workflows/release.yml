@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'CHANGELOG.md'
+      # Do not ignore pyproject.toml as manual version bumps should also trigger release if tagged? 
+      # Actually semantic-release handles this.
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    concurrency: release
+    environment:
+      name: pypi
+      url: https://pypi.org/p/api-test-mcp  # Update this if publishing to PyPI
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Required for semantic-release to read commit history
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install python-semantic-release build
+
+    - name: Build and Release
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }} # Uncomment if publishing to PyPI
+      run: |
+        # This command:
+        # 1. Analyzes commits
+        # 2. Bumps version in pyproject.toml
+        # 3. Generates CHANGELOG.md
+        # 4. Commits and tags
+        # 5. Builds dist/ artifacts (via build_command in config)
+        # 6. Publishes to GitHub Releases
+        
+        semantic-release version
+        semantic-release publish
+
+    # Optional: Publish to PyPI
+    # - name: Publish to PyPI
+    #   uses: pypa/gh-action-pypi-publish@release/v1
+    #   with:
+    #     user: __token__
+    #     password: ${{ secrets.PYPI_TOKEN }}

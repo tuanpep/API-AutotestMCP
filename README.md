@@ -2,13 +2,30 @@
 
 An MCP server that allows AI agents to perform automated backend testing, simulate real client behavior (iOS, Android, Web), and export session logs for audit.
 
-## Installation
+## Quick Install (One-Line)
 
-### From Source
+Run this command in your terminal:
+```bash
+curl -fsSL https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/api-test-mcp/main/install.sh | bash
+```
+
+## Manual Installation
+
+### Using uv (Recommended)
+```bash
+uv tool install git+https://github.com/YOUR_GITHUB_USERNAME/api-test-mcp
+```
+
+### Using pip
+```bash
+pip install git+https://github.com/YOUR_GITHUB_USERNAME/api-test-mcp
+```
+
+### From Source (Development)
 1. Clone the repository.
-2. Install dependencies:
+2. Run:
    ```bash
-   pip install .
+   chmod +x install.sh && ./install.sh
    ```
 
 ## Usage
@@ -28,6 +45,7 @@ Add the following to your MCP configuration file:
     "api-tester": {
       "command": "uv",
       "args": [
+        "tool",
         "run",
         "api-test-mcp"
       ]
